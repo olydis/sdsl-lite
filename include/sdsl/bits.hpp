@@ -11,7 +11,7 @@
 #include <stdint.h> // for uint64_t uint32_t declaration
 #include <iostream> // for cerr
 #include <cassert>
-#ifdef __SSE4_2__
+#if 1
 #include <xmmintrin.h>
 #endif
 
@@ -37,7 +37,7 @@ namespace sdsl {
 
 	\author Simon Gog
  */
-template<typename T=void>
+template<typename T=void>    
 struct bits_impl {
 	bits_impl() = delete;
 	//! 64bit mask with all bits set to 1.
@@ -491,7 +491,7 @@ struct bits_impl {
 template<typename T>
 inline uint64_t bits_impl<T>::cnt(uint64_t x)
 {
-#ifdef __SSE4_2__
+#if 1
 	return __builtin_popcountll(x);
 #else
 #ifdef POPCOUNT_TL
@@ -574,7 +574,7 @@ inline uint64_t bits_impl<T>::map01(uint64_t x, uint64_t c) { return ((x ^ ((x <
 template<typename T>
 inline uint32_t bits_impl<T>::sel(uint64_t x, uint32_t i)
 {
-#ifdef __SSE4_2__
+#if 1
 	uint64_t s = x, b;
 	s		   = s - ((s >> 1) & 0x5555555555555555ULL);
 	s		   = (s & 0x3333333333333333ULL) + ((s >> 2) & 0x3333333333333333ULL);
@@ -644,7 +644,7 @@ inline uint32_t bits_impl<T>::_sel(uint64_t x, uint32_t i)
 template<typename T>
 inline uint32_t bits_impl<T>::hi(uint64_t x)
 {
-#ifdef __SSE4_2__
+#if 1
 	if (x == 0) return 0;
 	return 63 - __builtin_clzll(x);
 #else
@@ -670,7 +670,7 @@ inline uint32_t bits_impl<T>::hi(uint64_t x)
 template<typename T>
 inline uint32_t bits_impl<T>::lo(uint64_t x)
 {
-#ifdef __SSE4_2__
+#if 1
 	if (x == 0) return 0;
 	return __builtin_ctzll(x);
 #else
